@@ -21,14 +21,14 @@ public class Seeder {
                 flightnumber.append(random.nextInt(10));
             }
 
-            ZonedDateTime departureTime = ZonedDateTime.now();
-            departureTime.plusMinutes(random.nextInt(60, 24 * 60 * 3)); //Schedule will range flights from 1 hour up to 3 days from now.
+            ZonedDateTime departureTime =
+                    ZonedDateTime.now().plusMinutes(random.nextInt(60, 24 * 60 * 3)); //Schedule will range flights from 1 hour up to 3 days from now.
             String departureIata = "TLL";
             String departureTerminal = "";
             String departureGate = "";
 
-            ZonedDateTime arrivalTime = departureTime;
-            arrivalTime.plusMinutes(random.nextInt(60, 8 * 60)); //Flights length will vary from 1 up to 8 hours.
+            ZonedDateTime arrivalTime =
+                    departureTime.plusMinutes(random.nextInt(60, 8 * 60)); //Flights length will vary from 1 up to 8 hours.
             String arrivalIata = "LLT"; //TODO! Generate random IATAs, gates and terminals.
             String arrivalTerminal = "";
             String arrivalGate = "";

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CGI Assignment Flights Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>
+<div>
+    <form action="#" th:action="@{/flights}" th:object="${filters}" method="post">
+        <p> Flightnumber: <input type="text" th:field="*{flightNumber}"></p>
+        <p> Date: <input type="date" th:field="*{depTime}"></p>
+        <p> Arrival Airport code: <input type="text" th:field="*{depIata}"></p>
+        <p> Search: <input type="submit"></p>
+    </form>
+</div>
+
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Flight number</th>
+            <th>Departure Time</th>
+            <th>Departure Airport</th>
+            <th>Arrival Time</th>
+            <th>Arrival Airport</th>
+        </tr>
+        </thead>
+        <tr th:each="flight: ${flights}">
+            <th th:text="${flight.flightNumber}"></th>
+            <th th:text="${#temporals.format(flight.getDepTime().toLocalDateTime(), 'dd-MM-yyyy HH:mm')}"></th>
+            <th th:text="${flight.getDepIata()}"></th>
+            <th th:text="${#temporals.format(flight.getArrTime().toLocalDateTime(), 'dd-MM-yyyy HH:mm')}"></th>
+            <th th:text="${flight.getArrIata()}"></th>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

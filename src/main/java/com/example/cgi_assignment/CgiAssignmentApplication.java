@@ -17,21 +17,4 @@ public class CgiAssignmentApplication {
     public static void main(String[] args) {
         SpringApplication.run(CgiAssignmentApplication.class, args);
     }
-
-    @Bean
-    public CommandLineRunner demo(SchedFlightDatabaseRepository repository){
-        return (args) -> {
-            // save a few flights
-            repository.saveAll(Seeder.seedList(9));
-
-            // fetch all flights
-            log.info("Flights found with findAll():");
-            log.info("-----------------------------");
-            repository.findAll().forEach(flightSchedule -> {
-                log.info("\n" + flightSchedule.toString());
-            });
-            log.info("");
-        };
-    }
-
 }

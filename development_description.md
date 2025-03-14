@@ -24,3 +24,9 @@ I will start this assignment by defining what I need to do and how I think the t
 
 ### Commit 1.
 For now, the best idea I have how to change between database and real data from API is to use Dependency injection. It will provide the demanded implementation of SchedFlightRepositoryI which may be Database or real data from API. This way if we want to replace or add new data sources we can just write new interface implementation.
+### Commit 2.
+I decided to make a first look at which API should be used later. And I haven't found any free APIs which would provide flight prices. 
+
+All other data is fine, so I'll just generate prices on a flight duration basis for imitation purposes. This way we'll have generated fees unless real flight price is provided.
+
+I tried to filter all data at once to create single Query request, and i found two ways to do it - Query By Example or via Specifications Executor. I decided to use the latest because it looks more flexible and clear to follow.
