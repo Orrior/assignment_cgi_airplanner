@@ -1,11 +1,8 @@
-package com.example.cgi_assignment.model.API;
+package com.example.cgi_assignment.model.api;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @NoArgsConstructor
 @Getter

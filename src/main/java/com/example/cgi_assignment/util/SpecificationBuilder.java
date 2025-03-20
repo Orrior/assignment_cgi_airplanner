@@ -1,6 +1,6 @@
 package com.example.cgi_assignment.util;
 
-import com.example.cgi_assignment.model.API.SchedFlightDTO;
+import com.example.cgi_assignment.model.api.SchedFlightDTO;
 import com.example.cgi_assignment.model.SchedFlight;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;

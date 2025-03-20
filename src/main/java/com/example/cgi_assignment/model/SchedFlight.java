@@ -1,13 +1,12 @@
 package com.example.cgi_assignment.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Entity
 @IdClass(SchedFlightPK.class)
@@ -16,19 +15,19 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 public class SchedFlight {
     @Id
+    @Column(name = "flight_number")
     String flightNumber;
+    @Id
+    @Column(name = "dep_iata")
+    String depIata;
+    @Id
+    @Column(name = "arr_iata")
+    String arrIata;
 
     ZonedDateTime depTime;
-
-    @Id
-    String depIata;
     String depTerminal;
     String depGate;
-
     ZonedDateTime arrTime;
-
-    @Id
-    String arrIata;
     String arrTerminal;
     String arrGate;
 
@@ -42,5 +41,9 @@ public class SchedFlight {
                 + " IATA:" + this.arrIata
                 + " Gate" + this.arrGate
                 + " Terminal: " + this.arrTerminal + "}";
+    }
+
+    public SchedFlightPK getId(){
+        return new SchedFlightPK(flightNumber, depIata, arrIata);
     }
 }

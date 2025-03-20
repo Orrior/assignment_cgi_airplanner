@@ -30,3 +30,6 @@ I decided to make a first look at which API should be used later. And I haven't 
 All other data is fine, so I'll just generate prices on a flight duration basis for imitation purposes. This way we'll have generated fees unless real flight price is provided.
 
 I tried to filter all data at once to create single Query request, and i found two ways to do it - Query By Example or via Specifications Executor. I decided to use the latest because it looks more flexible and clear to follow.
+### Commit 3.
+This is a rare case, but sometimes the flight may overlap, so instead of flight number primary key it is better to use the Composite Key consisting of flight number and both airport codes.
+

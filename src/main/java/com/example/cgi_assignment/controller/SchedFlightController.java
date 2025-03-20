@@ -1,6 +1,6 @@
 package com.example.cgi_assignment.controller;
 
-import com.example.cgi_assignment.model.API.SchedFlightDTO;
+import com.example.cgi_assignment.model.api.SchedFlightDTO;
 import com.example.cgi_assignment.model.SchedFlight;
 import com.example.cgi_assignment.service.SchedFlightService;
 import org.springframework.stereotype.Controller;
@@ -37,7 +37,7 @@ public class SchedFlightController {
             System.out.println(schedFlight);
         }
 
-        model.addAttribute("flights", filters);
+        model.addAttribute("flights", schedFlightsFiltered);
         model.addAttribute("filters", filters);
         return "flights";
     }

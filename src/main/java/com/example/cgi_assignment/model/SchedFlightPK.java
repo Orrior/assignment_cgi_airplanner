@@ -1,5 +1,6 @@
 package com.example.cgi_assignment.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -7,6 +8,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class SchedFlightPK implements Serializable {
     private String flightNumber;
@@ -26,4 +28,6 @@ public class SchedFlightPK implements Serializable {
     public int hashCode() {
         return Objects.hash(flightNumber, depIata, arrIata);
     }
+
+
 }

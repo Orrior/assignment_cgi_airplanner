@@ -24,6 +24,7 @@
             <th>Departure Airport</th>
             <th>Arrival Time</th>
             <th>Arrival Airport</th>
+            <th></th>
         </tr>
         </thead>
         <tr th:each="flight: ${flights}">
@@ -32,6 +33,12 @@
             <th th:text="${flight.getDepIata()}"></th>
             <th th:text="${#temporals.format(flight.getArrTime().toLocalDateTime(), 'dd-MM-yyyy HH:mm')}"></th>
             <th th:text="${flight.getArrIata()}"></th>
+            <th><form th:action="@{/seats}" method="get">
+                <input type="hidden" name="flightnumber" th:value="${flight.flightNumber}">
+                <input type="hidden" name="depiata" th:value="${flight.depIata}">
+                <input type="hidden" name="arriata" th:value="${flight.arrIata}">
+                <input type="submit"/>
+            </form></th>
         </tr>
     </table>
 </div>

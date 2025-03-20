@@ -16,7 +16,11 @@ public class LoadDatabase {
     public CommandLineRunner demo(SchedFlightDatabaseRepository repository){
         return (args) -> {
             // save a few flights
-            log.info("Seeding In-memory Database... " + repository.saveAll(Seeder.seedList(9)));
+            if(repository.count() == 0){
+                log.info("Seeding In-memory Database... " + repository.saveAll(Seeder.seedFlights(9)));
+            } else{
+                log.info("Database is not empty, seeding is not needed.");
+            }
         };
     }
 }

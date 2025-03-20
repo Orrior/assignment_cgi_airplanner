@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p th:text="|Hello, World!|" />
+<div>
+    <p>flight data:</p>
+    <a th:text="${flight.flightNumber}"></a>
+    <a th:text="${flight.depIata}"></a>
+    <a th:text="${flight.arrIata}"></a>
+    <p>---end of flight data---</p>
+</div>
+<div>
+    <form th:action="@{/seats(
+    flightnumber = ${flight.getFlightNumber()},
+    depiata = ${flight.getDepIata()},
+    arriata = ${flight.getArrIata()})}" method="post">
+    <table>
+        <tr>
+            <td bgcolor="#6495ed">&nbsp <input name="tier" type="checkbox" value="0" th:checked="${tiers?.contains(0)}"></td>
+            <td> - Economy Class Seats</td>
+        </tr>
+        <tr>
+            <td bgcolor=#87cefa>&nbsp <input name="tier" type="checkbox" value="1" th:checked="${tiers?.contains(1)}"></td>
+            <td>
+                - Extra Leg Space Seats
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#00fa9a">&nbsp <input name="tier" type="checkbox" value="2" th:checked="${tiers?.contains(2)}"></td>
+            <td>
+                - First Class Seats
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="yellow">&nbsp <input name="tier" type="checkbox" value="3" th:checked="${tiers?.contains(3)}"></td>
+            <td>
+                - Business Class Seats
+            </td>
+        </tr>
+        <tr>
+            <td><input name="windowPreferred" type="checkbox" value="true"/></td>
+            <td>- Prefer seats near window</td>
+        </tr>
+    </table>
+
+        <input type="submit" value="Highlight recommended spots"/>
+    </form>
+
+    <form th:action="@{/seats/order(
+    flightnumber = ${flight.getFlightNumber()},
+    depiata = ${flight.getDepIata()},
+    arriata = ${flight.getArrIata()})}" method="post">
+    <table border="1px">
+        <tr>
+            <th>#</th>
+            <th th:each="column: ${#numbers.sequence(0, seats.getColumns()-1)}" th:text="${seats.getColumnLetters()[column]}"></th>
+        </tr>
+        <tr th:each="i: ${#numbers.sequence(1, seats.getRows())}">
+            <td th:text="${i}">
+            </td>
+            <td th:each="j: ${#numbers.sequence(1, seats.getColumns())}"
+                th:bgcolor="${recommendedSeats != null && recommendedSeats.contains(seats.getSeat(i,j).getSeatLocation())} ? 'green'">
+                <input type="checkbox" name="pickedseats" th:value="${i}+','+${j}" th:disabled="${seats.getSeat(i,j).isOccupied()}"/>
+            </td>
+        </tr>
+    </table>
+        <button type="submit">Order Selected Buttons</button>
+    </form>
+</div>
+</body>
+</html>

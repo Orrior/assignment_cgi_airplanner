@@ -1,4 +1,4 @@
 package com.example.cgi_assignment.repository;
 
-public interface SchedFlightApiRepository extends SchedFlightRepositoryI{
+public interface SchedFlightApiRepository extends SchedFlightRepository {
 }
