@@ -63,7 +63,7 @@ If the number of tickets exceeds the number of seats, the program will warn you 
 
 The names of seat owners are not indicated for anonymity.
 
-##Other
+## Other
 **NB!** *For development purposes, if we want check tickets owner, we can enter next address:*
 
 `/greeting?flightnumber={string}&depiata={string}&arriata={string}`
