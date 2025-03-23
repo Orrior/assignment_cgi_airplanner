@@ -5,14 +5,9 @@ import com.example.cgi_assignment.model.Seat;
 import com.example.cgi_assignment.model.enums.SeatTier;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Seeder {
-    //this class will be used to seed Data
-
     public static List<SchedFlight> seedFlights(int amount){
         List<SchedFlight> flights = new ArrayList<>();
         Random random = new Random();
@@ -25,13 +20,14 @@ public class Seeder {
 
             ZonedDateTime departureTime = ZonedDateTime.now().plusMinutes(random.nextInt(60, 24 * 60 * 3));
             String departureIata = "TLL";
-            String departureTerminal = "";
-            String departureGate = "";
+            String departureTerminal = "" + random.nextInt(9);
+            String departureGate = "" + random.nextInt(9);
 
             ZonedDateTime arrivalTime = departureTime.plusMinutes(random.nextInt(60, 8 * 60));
-            String arrivalIata = "LLT"; //TODO! Generate random IATAs, gates and terminals.
-            String arrivalTerminal = "";
-            String arrivalGate = "";
+            List<String> iatasPlaceholders = Arrays.asList("ABC", "DEF", "GHI", "JKL", "MNO", "PQR", "STU", "VWX");
+            String arrivalIata = iatasPlaceholders.get(random.nextInt(iatasPlaceholders.size()));
+            String arrivalTerminal = "" + random.nextInt(9);
+            String arrivalGate = "" + random.nextInt(9);
 
             SchedFlight flight = new SchedFlight(
                     flightnumber.toString(),
@@ -50,27 +46,22 @@ public class Seeder {
                 flights.add(flight);
             }
         }
-
         return flights;
     }
 
     public static List<Seat> seedSeats(SchedFlight schedFlight, float coefficient){
-        return populateSeats(generateSeats(schedFlight), coefficient);
-    }
+        LinkedHashMap<SeatTier, Integer> seatsConfig = new LinkedHashMap<>();
 
-    public static List<Seat> generateSeats(SchedFlight flight){
-        //TODO! This is hardcoded implementation, should be more configurable later
-
-        HashMap<SeatTier, Integer> seatsConfig = new HashMap<>();
-
-        //TODO! This is not sorted and served not in order!
         seatsConfig.put(SeatTier.BUSINESS_CLASS_SEAT, 4);
         seatsConfig.put(SeatTier.FIRST_CLASS_SEAT, 5);
         seatsConfig.put(SeatTier.STRETCH_SEAT,2);
         seatsConfig.put(SeatTier.ECONOMY_SEAT, 7);
-
         int seatsWidth = 6;
 
+        return populateSeats(generateSeats(schedFlight, seatsConfig, seatsWidth), coefficient);
+    }
+
+    private static List<Seat> generateSeats(SchedFlight flight, LinkedHashMap<SeatTier, Integer> seatsConfig, Integer seatsWidth){
         List<Seat> seats = new ArrayList<>();
         int rowindex = 1;
 
@@ -88,17 +79,15 @@ public class Seeder {
         return seats;
     }
 
-    //I.e. if we wish to populate 30% of plane coefficient should be 0.3
-    //TODO: idk if this is good, maybe i should improve this later...
     private static List<Seat> populateSeats(List<Seat> seats, float coefficient) {
         Random random = new Random();
 
         for (Seat seat : seats) {
+            //I.e. if we want to populate 30% of plane coefficient should be 0.3
             if(random.nextFloat() <= coefficient){
                 seat.setOwnerName("John Doe");
             }
         }
-
         return seats;
     }
 }

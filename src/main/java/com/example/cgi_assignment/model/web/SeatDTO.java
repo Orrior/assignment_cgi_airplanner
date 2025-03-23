@@ -1,4 +1,4 @@
-package com.example.cgi_assignment.model.api;
+package com.example.cgi_assignment.model.web;
 
 import com.example.cgi_assignment.model.enums.SeatTier;
 import lombok.AllArgsConstructor;

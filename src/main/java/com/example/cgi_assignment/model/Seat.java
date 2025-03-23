@@ -34,4 +34,8 @@ public class Seat {
         this.seatColumn = seatColumn;
         this.seatTier = seatTier;
     }
+
+    public String toString(){
+        return "Seat[%d,%d]|Owner: %s| SeatTier: %s".formatted(seatRow, seatColumn, ownerName, seatTier.toString());
+    }
 }

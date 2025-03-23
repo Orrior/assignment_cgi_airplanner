@@ -1,4 +1,4 @@
-package com.example.cgi_assignment.model.api;
+package com.example.cgi_assignment.model.web;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,21 +1,19 @@
 package com.example.cgi_assignment.util;
 
-import com.example.cgi_assignment.model.Seat;
-import com.example.cgi_assignment.model.api.SeatDTO;
-import com.example.cgi_assignment.model.api.SeatsDTO;
-import com.example.cgi_assignment.model.enums.SeatTier;
+import com.example.cgi_assignment.model.web.SeatDTO;
+import com.example.cgi_assignment.model.web.SeatsDTO;
 import org.antlr.v4.runtime.misc.Pair;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class SeatPicker {
 
     public static List<Pair<Integer, Integer>> filterSeats(SeatsDTO seatsDTO, List<Integer> seatTiers, Boolean windowSeatPreferred){
         List<Pair<Integer,Integer>> recommendedSeats = new ArrayList<>();
-        if(windowSeatPreferred){
+        if(windowSeatPreferred != null && windowSeatPreferred){
             recommendedSeats = pickSeatsNearWindows(seatsDTO, filterSeatsTier(seatsDTO,seatTiers));
         } else if(seatTiers != null){
             recommendedSeats = filterSeatsTier(seatsDTO, seatTiers);
@@ -23,7 +21,6 @@ public class SeatPicker {
         return recommendedSeats;
     }
 
-    // If seat tier not chosen - provide all seats.
     public static List<Pair<Integer, Integer>> filterSeatsTier(SeatsDTO seatsDTO, List<Integer> seatTiers){
         List<Pair<Integer, Integer>> recommendedSeats = new ArrayList<>();
         if(seatTiers == null){
@@ -57,8 +54,7 @@ public class SeatPicker {
     }
 
     public static List<Pair<Integer,Integer>> pickMultipleSeats(int persons, SeatsDTO seatsDTO, List<Pair<Integer,Integer>> filteredSeatLocations, boolean windowSeatPreferred) {
-        //check whether it is enough free seats
-        if(seatsDTO.seats.values().stream().filter(x -> x.isOccupied()).count() < persons){
+        if(seatsDTO.seats.values().stream().filter(x -> !x.isOccupied()).count() < persons){
             throw new IllegalArgumentException("Requested seats number has exceeded available capacity");
         }
 
@@ -71,7 +67,7 @@ public class SeatPicker {
                 Pair<Integer, Integer> position = new Pair<>(rows, columns);
                 if(filteredSeatLocations.contains(position)) {
                     rowConsecutive.add(new Pair<>(rows,columns));
-                    // If we have enough seats, return
+                    // If we have already found enough seats, return
                     if(rowConsecutive.size() >= persons){
                         if(!windowSeatPreferred){
                             return rowConsecutive;
@@ -97,19 +93,26 @@ public class SeatPicker {
 
         //sort by continuous seats in row
         var firstSort = seatsData.stream().sorted(Comparator.comparingInt(List::size)).toList();
-//        var secondSort = firstSort.stream().sorted(Comparator.comparingInt(x -> x.stream().max(Comparator.comparing(List::size)).get().size())).toList();
-        var secondSort = new ArrayList<>(firstSort.stream().sorted(Comparator.comparingInt(x -> x.stream().flatMap(List::stream).toList().size())).toList());
+        //Then sort by overall number of seats in row
+        var secondSort = new ArrayList<>(firstSort.stream().sorted(
+                Comparator.comparingInt(x -> x.stream().flatMap(List::stream).toList().size())).toList());
         Collections.reverse(secondSort);
 
         List<Pair<Integer, Integer>> recommendedPlaces = new ArrayList<>();
-        int personsleft = persons;
+        int personsLeft = persons;
 
         for (List<List<Pair<Integer, Integer>>> nestedSeats : secondSort) {
             for (List<Pair<Integer, Integer>> seatsList : nestedSeats) {
-
+                if(personsLeft >= seatsList.size()){
+                    if(windowSeatPreferred && seatsList.stream().noneMatch(x -> x.b == 1 || x.b == seatsDTO.columns)) {
+                        continue;
+                    }
+                    recommendedPlaces.addAll(seatsList);
+                    personsLeft -= seatsList.size();
+                }
             }
         }
 
-        return new ArrayList<>();
+        return recommendedPlaces;
     }
 }

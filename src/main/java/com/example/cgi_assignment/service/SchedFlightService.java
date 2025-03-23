@@ -1,6 +1,6 @@
 package com.example.cgi_assignment.service;
 
-import com.example.cgi_assignment.model.api.SchedFlightDTO;
+import com.example.cgi_assignment.model.web.SchedFlightDTO;
 import com.example.cgi_assignment.model.SchedFlight;
 import com.example.cgi_assignment.model.SchedFlightPK;
 import com.example.cgi_assignment.repository.SchedFlightRepository;
@@ -23,12 +23,10 @@ public class SchedFlightService {
 
     public List<SchedFlight> getAllSchedFlights(){
         return repo.findAll();
-        //TODO pagination?
     }
 
     public List<SchedFlight> getAllByFilters(SchedFlightDTO filter) {
         return repo.findAll(SpecificationBuilder.buildSpecsByFilter(filter));
-        //Filter by Date
     }
 
     public Optional<SchedFlight> findById(SchedFlightPK id) {

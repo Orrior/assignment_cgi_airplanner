@@ -1,15 +1,11 @@
-package com.example.cgi_assignment.model.api;
+package com.example.cgi_assignment.model.web;
 
-import com.example.cgi_assignment.model.Seat;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.antlr.v4.runtime.misc.Pair;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 @AllArgsConstructor
 @Getter

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SchedFlightRepository {
-    List<SchedFlight> findAllByDepIata(String depIata);
     List<SchedFlight> findAll();
     List<SchedFlight> findAll(Specification<SchedFlight> spec);
     Optional<SchedFlight> findById(SchedFlightPK id);

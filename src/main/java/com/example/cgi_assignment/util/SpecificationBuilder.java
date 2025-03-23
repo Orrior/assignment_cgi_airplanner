@@ -1,6 +1,6 @@
 package com.example.cgi_assignment.util;
 
-import com.example.cgi_assignment.model.api.SchedFlightDTO;
+import com.example.cgi_assignment.model.web.SchedFlightDTO;
 import com.example.cgi_assignment.model.SchedFlight;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,7 +17,6 @@ public class SpecificationBuilder {
             List<Predicate> predicates = new ArrayList<>();
 
             if (filter.getDepTime() != null && !filter.getDepTime().isEmpty()) {
-                // Преобразуем строку в LocalDate (предполагается формат "yyyy-MM-dd")
                 LocalDate date = LocalDate.parse(filter.getDepTime());
                 ZonedDateTime startOfDay = date.atStartOfDay(ZoneId.systemDefault());
                 ZonedDateTime endOfDay = startOfDay.plusDays(1);
