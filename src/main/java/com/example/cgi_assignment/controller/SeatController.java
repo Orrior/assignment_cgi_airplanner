@@ -58,7 +58,7 @@ public class SeatController {
     }
 
     @PostMapping("/seats")
-    String getSeatsFilter(
+    String postSeatsFilter(
             @RequestParam(name="flightnumber") String flightnumber,
             @RequestParam(name="depiata") String depIata,
             @RequestParam(name="arriata") String arrIata,
@@ -76,6 +76,10 @@ public class SeatController {
             return redirectErrorToFlights(redirectAttributes,
                     "Flight with such parameters is not found.");
         }
+        if(ticketsNumber == null) {
+            return redirectErrorToSeats(
+                    redirectAttributes, flightnumber, depIata, arrIata, "please enter tickets number");
+        }
         if(windowPreferred != null){
             model.addAttribute("windowpreferred", windowPreferred);
         }
@@ -83,19 +87,15 @@ public class SeatController {
         SeatsDTO seatsDTO = seatService.getOrSeedSeats(schedFlight.get());
         List<Pair<Integer, Integer>> recommendedSeats;
 
-        if(ticketsNumber != null) {
-            try{
-                recommendedSeats = SeatPicker.filterSeatsTier(seatsDTO, tiers);
-                recommendedSeats = SeatPicker.pickMultipleSeats(ticketsNumber, seatsDTO, recommendedSeats, windowPreferred);
-            } catch (Exception e){
-                return redirectErrorToSeats(redirectAttributes,
-                        flightnumber,
-                        depIata,
-                        arrIata,
-                        "Error:" + e.getMessage());
-            }
-        } else {
-            recommendedSeats = SeatPicker.filterSeats(seatsDTO, tiers, windowPreferred);
+        try{
+            recommendedSeats = SeatPicker.filterSeatsTier(seatsDTO, tiers);
+            recommendedSeats = SeatPicker.pickMultipleSeats(ticketsNumber, seatsDTO, recommendedSeats, windowPreferred);
+        } catch (Exception e){
+            return redirectErrorToSeats(redirectAttributes,
+                    flightnumber,
+                    depIata,
+                    arrIata,
+                    "Error:" + e.getMessage());
         }
 
         model.addAttribute("flight", schedFlight.get());

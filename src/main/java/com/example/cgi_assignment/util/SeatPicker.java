@@ -11,16 +11,6 @@ import java.util.List;
 
 public class SeatPicker {
 
-    public static List<Pair<Integer, Integer>> filterSeats(SeatsDTO seatsDTO, List<Integer> seatTiers, Boolean windowSeatPreferred){
-        List<Pair<Integer,Integer>> recommendedSeats = new ArrayList<>();
-        if(windowSeatPreferred != null && windowSeatPreferred){
-            recommendedSeats = pickSeatsNearWindows(seatsDTO, filterSeatsTier(seatsDTO,seatTiers));
-        } else if(seatTiers != null){
-            recommendedSeats = filterSeatsTier(seatsDTO, seatTiers);
-        }
-        return recommendedSeats;
-    }
-
     public static List<Pair<Integer, Integer>> filterSeatsTier(SeatsDTO seatsDTO, List<Integer> seatTiers){
         List<Pair<Integer, Integer>> recommendedSeats = new ArrayList<>();
         if(seatTiers == null){
@@ -40,19 +30,6 @@ public class SeatPicker {
         return recommendedSeats;
     }
 
-    private static List<Pair<Integer, Integer>> pickSeatsNearWindows(SeatsDTO seatsDto, List<Pair<Integer,Integer>> filteredSeatLocations){
-        List<Pair<Integer, Integer>> recommendedSeats = new ArrayList<>();
-
-        for (Pair<Integer, Integer> pos : filteredSeatLocations) {
-            SeatDTO seat = seatsDto.getSeat(pos.a, pos.b);
-
-            if(!seat.isOccupied() && (seat.getSeatColumn() == 1 || seat.getSeatColumn() == seatsDto.columns)){
-                recommendedSeats.add(pos);
-            }
-        }
-        return recommendedSeats;
-    }
-
     public static List<Pair<Integer,Integer>> pickMultipleSeats(int persons, SeatsDTO seatsDTO, List<Pair<Integer,Integer>> filteredSeatLocations, boolean windowSeatPreferred) {
         if(seatsDTO.seats.values().stream().filter(x -> !x.isOccupied()).count() < persons){
             throw new IllegalArgumentException("Requested seats number has exceeded available capacity");
@@ -67,15 +44,6 @@ public class SeatPicker {
                 Pair<Integer, Integer> position = new Pair<>(rows, columns);
                 if(filteredSeatLocations.contains(position)) {
                     rowConsecutive.add(new Pair<>(rows,columns));
-                    // If we have already found enough seats, return
-                    if(rowConsecutive.size() >= persons){
-                        if(!windowSeatPreferred){
-                            return rowConsecutive;
-                        }
-                        if(rowConsecutive.contains(new Pair<>(rows, 0)) || columns == seatsDTO.columns){
-                            return rowConsecutive;
-                        }
-                    }
                 } else{
                     if(rowConsecutive.size() > 0){
                         row.add(rowConsecutive);
